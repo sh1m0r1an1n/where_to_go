@@ -8,7 +8,8 @@ class PlaceImageInline(admin.TabularInline):
     
     model = PlaceImage
     extra = 1
-    fields = ['image_url']
+    fields = ['image', 'order']
+    ordering = ['order']
 
 
 @admin.register(Place)
@@ -39,21 +40,22 @@ class PlaceImageAdmin(admin.ModelAdmin):
     
     list_display = [
         'place', 
+        'order',
         'image_preview'
     ]
     
     list_filter = ['place']
     
-    search_fields = ['place__title', 'image_url']
+    search_fields = ['place__title']
     
-    ordering = ['place', 'id']
+    ordering = ['place', 'order']
     
     def image_preview(self, obj):
         """Показывает превью изображения"""
-        if obj.image_url:
+        if obj.image:
             return format_html(
                 '<img src="{}" style="max-height: 50px; max-width: 100px;" />',
-                obj.image_url
+                obj.image.url
             )
         return "Нет изображения"
     image_preview.short_description = "Превью"

@@ -1,5 +1,13 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+import os
+
+
+def place_image_path(instance, filename):
+    """Генерирует путь для сохранения изображения места"""
+    place_name = instance.place.title.replace(' ', '_').replace('/', '_').replace('\\', '_')
+    place_name = ''.join(c for c in place_name if c.isalnum() or c in '_-')
+    return os.path.join('places', place_name, filename)
 
 
 class Place(models.Model):
@@ -48,12 +56,22 @@ class PlaceImage(models.Model):
         verbose_name="Место"
     )
     
-    image_url = models.URLField(max_length=500, verbose_name="URL изображения")
+    image = models.ImageField(
+        upload_to=place_image_path,
+        verbose_name="Изображение"
+    )
+    
+    order = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Порядок",
+        help_text="Порядок отображения изображения (0 - первое)"
+    )
     
     class Meta:
         verbose_name = "Изображение места"
         verbose_name_plural = "Изображения мест"
-        ordering = ['place', 'id']
+        ordering = ['place', 'order', 'id']
+        unique_together = ['place', 'order']
     
     def __str__(self):
-        return f"Изображение для {self.place.title}"
+        return f"Изображение {self.order} для {self.place.title}"

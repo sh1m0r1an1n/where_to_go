@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from adminsortable2.admin import SortableTabularInline, SortableAdminBase
+from tinymce.widgets import TinyMCE
 from .models import Place, PlaceImage
 
 
@@ -46,6 +47,12 @@ class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     ]
     
     inlines = [PlaceImageInline]
+    
+    def formfield_for_dbfield(self, db_field, request, **kwargs):
+        """Настройка виджетов для полей"""
+        if db_field.name == 'description_long':
+            kwargs['widget'] = TinyMCE(attrs={'cols': 80, 'rows': 30})
+        return super().formfield_for_dbfield(db_field, request, **kwargs)
     
     def images_count(self, obj):
         """Показывает количество изображений для места"""

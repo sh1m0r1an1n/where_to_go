@@ -116,6 +116,79 @@ python manage.py runserver
 - **Превью изображений** для удобства работы
 - **Автоматическая нумерация** фотографий
 
+## Массовая загрузка данных
+
+Для быстрого наполнения сайта контентом созданы специальные management команды, которые позволяют загружать данные о местах из JSON файлов.
+
+### Команда load_place
+
+Загружает данные одного места из JSON файла или URL:
+
+```bash
+python manage.py load_place <путь_к_файлу_или_URL>
+```
+
+**Примеры использования:**
+```bash
+# Загрузка из локального файла
+python manage.py load_place "data/places/Антикафе Bizone.json"
+
+# Загрузка из URL
+python manage.py load_place "https://example.com/place.json"
+
+# Перезаписать существующие данные
+python manage.py load_place "data/places/place.json" --force
+```
+
+### Команда load_all_places
+
+Загружает все JSON файлы из указанной папки:
+
+```bash
+python manage.py load_all_places <путь_к_папке>
+```
+
+**Примеры использования:**
+```bash
+# Загрузка всех файлов из папки
+python manage.py load_all_places "where-to-go-places-master/places"
+
+# Перезаписать существующие данные
+python manage.py load_all_places "where-to-go-places-master/places" --force
+```
+
+### Формат данных
+
+JSON файлы должны содержать следующие обязательные поля:
+
+```json
+{
+    "title": "Название места",
+    "description_short": "Краткое описание",
+    "description_long": "Подробное описание (может содержать HTML)",
+    "coordinates": {
+        "lat": "55.816591",
+        "lng": "37.50169"
+    },
+    "imgs": [
+        "https://example.com/image1.jpg",
+        "https://example.com/image2.jpg"
+    ]
+}
+```
+
+**Где брать данные:**
+- Репозиторий `https://github.com/devmanorg/where-to-go-places` содержит готовые JSON файлы с данными
+- JSON файлы можно размещать в любой папке проекта
+- Изображения автоматически скачиваются из URL и сохраняются в `media/places/`
+
+**Возможности команд:**
+- Автоматическое скачивание изображений из URL
+- Проверка на дубликаты (места с одинаковыми названиями)
+- Валидация обязательных полей
+- Транзакционная безопасность загрузки
+- Подробный вывод прогресса и статистики
+
 ## Технологии
 
 - **Django 5.2** - веб-фреймворк

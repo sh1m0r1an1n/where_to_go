@@ -63,14 +63,13 @@ class PlaceImage(models.Model):
     order = models.PositiveIntegerField(
         default=0,
         verbose_name="Порядок",
-        help_text="Порядок отображения изображения (0 - первое)"
+        help_text="Порядок отображения изображения (заполняется автоматически)"
     )
     
     class Meta:
         verbose_name = "Изображение места"
         verbose_name_plural = "Изображения мест"
-        ordering = ['place', 'order', 'id']
-        unique_together = ['place', 'order']
+        ordering = ['place', 'order']
     
     def __str__(self):
         return f"Изображение {self.order} для {self.place.title}"

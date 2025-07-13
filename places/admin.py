@@ -1,17 +1,16 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from adminsortable2.admin import SortableTabularInline, SortableAdminBase
 from .models import Place, PlaceImage
-import traceback
 
 
-class PlaceImageInline(admin.TabularInline):
-    """Inline для отображения изображений места в админке"""
+class PlaceImageInline(SortableTabularInline):
+    """Inline для отображения изображений места в админке с поддержкой сортировки"""
     
     model = PlaceImage
-    extra = 1
-    fields = ['image', 'image_preview', 'order']
+    extra = 0
+    fields = ['image', 'image_preview']
     readonly_fields = ['image_preview']
-    ordering = ['order']
     
     def image_preview(self, obj):
         """Показывает превью изображения в inline форме"""
@@ -26,7 +25,7 @@ class PlaceImageInline(admin.TabularInline):
 
 
 @admin.register(Place)
-class PlaceAdmin(admin.ModelAdmin):
+class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     """Админка для модели Place"""
     
     list_display = [
@@ -50,13 +49,8 @@ class PlaceAdmin(admin.ModelAdmin):
     
     def images_count(self, obj):
         """Показывает количество изображений для места"""
-        try:
-            count = obj.images.count()
-            return f"{count} изображений"
-        except Exception as e:
-            print(f"Ошибка в images_count: {e}")
-            print(traceback.format_exc())
-            return "Ошибка подсчета"
+        count = obj.images.count()
+        return f"{count} изображений"
     
     images_count.short_description = "Изображения"
 
@@ -80,25 +74,18 @@ class PlaceImageAdmin(admin.ModelAdmin):
     fields = [
         'place',
         'image',
-        'image_preview',
-        'order'
+        'image_preview'
     ]
     
     readonly_fields = ['image_preview']
     
     def image_preview(self, obj):
         """Показывает превью изображения"""
-        try:
-            if obj.image:
-                return format_html(
-                    '<img src="{}" style="max-height: 200px; max-width: 400px; object-fit: contain; border: 1px solid #ddd; border-radius: 4px;" />',
-                    obj.image.url
-                )
-            return "Нет изображения"
-        except Exception as e:
-            # Выводим ошибку в консоль для отладки
-            print(f"Ошибка в image_preview: {e}")
-            print(traceback.format_exc())
-            return "Ошибка загрузки превью"
+        if obj.image:
+            return format_html(
+                '<img src="{}" style="max-height: 200px; max-width: 400px; object-fit: contain; border: 1px solid #ddd; border-radius: 4px;" />',
+                obj.image.url
+            )
+        return "Нет изображения"
     
     image_preview.short_description = "Превью"

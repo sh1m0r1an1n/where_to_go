@@ -5,9 +5,8 @@ import os
 
 def place_image_path(instance, filename):
     """Генерирует путь для сохранения изображения места"""
-    place_name = instance.place.title.replace(' ', '_').replace('/', '_').replace('\\', '_')
-    place_name = ''.join(c for c in place_name if c.isalnum() or c in '_-')
-    return os.path.join('places', place_name, filename)
+    place_id = instance.place.id
+    return os.path.join('places', f'place_{place_id}', filename)
 
 
 class Place(models.Model):

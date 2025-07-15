@@ -143,12 +143,10 @@ class Command(BaseCommand):
             if not filename:
                 filename = f'image_{order}.jpg'
             
-            place_image = PlaceImage(place=place, order=order)
-            
-            place_image.image.save(
-                filename,
-                ContentFile(response.content),
-                save=True
+            PlaceImage.objects.create(
+                place=place,
+                order=order,
+                image=ContentFile(response.content, name=filename)
             )
             
         except requests.RequestException as e:

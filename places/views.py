@@ -1,7 +1,9 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse
-from .models import Place
 import urllib.parse
+
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
+
+from .models import Place
 
 
 def get_place_details_json(request, place_id):

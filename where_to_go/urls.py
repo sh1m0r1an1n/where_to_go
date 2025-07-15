@@ -1,9 +1,10 @@
-from django.contrib import admin
-from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
-from where_to_go import views
+from django.contrib import admin
+from django.urls import include, path
+
 from places import views as places_views
+from where_to_go import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),

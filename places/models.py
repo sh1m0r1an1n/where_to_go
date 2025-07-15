@@ -13,9 +13,9 @@ def place_image_path(instance, filename):
 class Place(models.Model):
     """Модель для хранения информации о местах"""
     
-    title = models.CharField(max_length=200, verbose_name="Название места")
-    short_description = models.TextField(verbose_name="Краткое описание", blank=True)
-    long_description = models.TextField(verbose_name="Подробное описание", blank=True)
+    title = models.CharField(max_length=200, verbose_name='Название места')
+    short_description = models.TextField(verbose_name='Краткое описание', blank=True)
+    long_description = models.TextField(verbose_name='Подробное описание', blank=True)
     
     latitude = models.DecimalField(
         max_digits=16,
@@ -24,7 +24,7 @@ class Place(models.Model):
             MinValueValidator(-90),
             MaxValueValidator(90)
         ],
-        verbose_name="Широта"
+        verbose_name='Широта'
     )
     
     longitude = models.DecimalField(
@@ -34,12 +34,12 @@ class Place(models.Model):
             MinValueValidator(-180),
             MaxValueValidator(180)
         ],
-        verbose_name="Долгота"
+        verbose_name='Долгота'
     )
     
     class Meta:
-        verbose_name = "Место"
-        verbose_name_plural = "Места"
+        verbose_name = 'Место'
+        verbose_name_plural = 'Места'
         ordering = ['title']
     
     def __str__(self):
@@ -53,23 +53,23 @@ class PlaceImage(models.Model):
         Place,
         on_delete=models.CASCADE,
         related_name='images',
-        verbose_name="Место"
+        verbose_name='Место'
     )
     
     image = models.ImageField(
         upload_to=place_image_path,
-        verbose_name="Изображение"
+        verbose_name='Изображение'
     )
     
     order = models.PositiveIntegerField(
         default=0,
-        verbose_name="Порядок",
-        help_text="Порядок отображения изображения (заполняется автоматически)"
+        verbose_name='Порядок',
+        help_text='Порядок отображения изображения (заполняется автоматически)'
     )
     
     class Meta:
-        verbose_name = "Изображение места"
-        verbose_name_plural = "Изображения мест"
+        verbose_name = 'Изображение места'
+        verbose_name_plural = 'Изображения мест'
         ordering = ['place', 'order']
         indexes = [
             models.Index(fields=['place', 'order'], name='place_order_idx'),

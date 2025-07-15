@@ -22,9 +22,9 @@ class PlaceImageInline(SortableTabularInline):
                 '<img src="{}" style="max-height: 200px; max-width: 300px; object-fit: contain;" />',
                 obj.image.url
             )
-        return "Изображение не загружено"
+        return 'Изображение не загружено'
     
-    image_preview.short_description = "Превью"
+    image_preview.short_description = 'Превью'
 
 
 @admin.register(Place)
@@ -59,9 +59,9 @@ class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     def images_count(self, obj):
         """Показывает количество изображений для места"""
         count = obj.images.count()
-        return f"{count} изображений"
+        return f'{count} изображений'
     
-    images_count.short_description = "Изображения"
+    images_count.short_description = 'Изображения'
 
 
 @admin.register(PlaceImage)
@@ -97,6 +97,6 @@ class PlaceImageAdmin(admin.ModelAdmin):
                 '<img src="{}" style="max-height: 200px; max-width: 400px; object-fit: contain; border: 1px solid #ddd; border-radius: 4px;" />',
                 obj.image.url
             )
-        return "Нет изображения"
+        return 'Нет изображения'
     
-    image_preview.short_description = "Превью"
+    image_preview.short_description = 'Превью'

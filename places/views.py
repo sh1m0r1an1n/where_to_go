@@ -42,11 +42,11 @@ def get_place_details_json(request, place_id):
         id=place_id
     )
     
-    image_urls = []
-    for image in place.images.all():
-        if image.image:
-            decoded_url = urllib.parse.unquote(image.image.url)
-            image_urls.append(decoded_url)
+    image_urls = [
+        urllib.parse.unquote(image.image.url) 
+        for image in place.images.all() 
+        if image.image
+    ]
     
     response_data = {
         'title': place.title,

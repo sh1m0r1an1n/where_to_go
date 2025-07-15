@@ -48,7 +48,7 @@ def get_place_details_json(request, place_id):
         if image.image
     ]
     
-    response_data = {
+    serialized_place = {
         'title': place.title,
         'imgs': image_urls,
         'description_short': place.short_description,
@@ -60,7 +60,7 @@ def get_place_details_json(request, place_id):
     }
     
     return JsonResponse(
-        response_data,
+        serialized_place,
         json_dumps_params={
             'ensure_ascii': False,
             'indent': 2

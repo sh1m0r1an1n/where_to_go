@@ -9,14 +9,9 @@ from .models import Place
 
 def get_places_map(request):
     """Получает данные всех мест из БД и отображает карту с метками"""
-    places_geojson = {
-        'type': 'FeatureCollection',
-        'features': []
-    }
-    
     places = Place.objects.all()
-    for place in places:
-        feature = {
+    features = [
+        {
             'type': 'Feature',
             'geometry': {
                 'type': 'Point',
@@ -28,7 +23,13 @@ def get_places_map(request):
                 'detailsUrl': reverse('place_details', kwargs={'place_id': place.id})
             }
         }
-        places_geojson['features'].append(feature)
+        for place in places
+    ]
+    
+    places_geojson = {
+        'type': 'FeatureCollection',
+        'features': features
+    }
     
     return render(request, 'index.html', {
         'places_geojson': places_geojson

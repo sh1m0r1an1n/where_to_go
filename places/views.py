@@ -37,7 +37,10 @@ def get_places_map(request):
 
 def get_place_details_json(request, place_id):
     """Возвращает JSON данные о конкретном месте по его ID"""
-    place = get_object_or_404(Place, id=place_id)
+    place = get_object_or_404(
+        Place.objects.prefetch_related('images'), 
+        id=place_id
+    )
     
     image_urls = []
     for image in place.images.all():

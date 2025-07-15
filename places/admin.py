@@ -80,6 +80,8 @@ class PlaceImageAdmin(admin.ModelAdmin):
     
     ordering = ['place', 'order']
     
+    autocomplete_fields = ['place']
+    
     fields = [
         'place',
         'image',

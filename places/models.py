@@ -14,8 +14,8 @@ class Place(models.Model):
     """Модель для хранения информации о местах"""
     
     title = models.CharField(max_length=200, verbose_name="Название места")
-    description_short = models.TextField(verbose_name="Краткое описание")
-    description_long = models.TextField(verbose_name="Подробное описание")
+    description_short = models.TextField(verbose_name="Краткое описание", blank=True)
+    description_long = models.TextField(verbose_name="Подробное описание", blank=True)
     
     latitude = models.DecimalField(
         max_digits=16,

@@ -85,8 +85,8 @@ class Command(BaseCommand):
             place, created = Place.objects.get_or_create(
                 title=title,
                 defaults={
-                    'description_short': place_data['description_short'],
-                    'description_long': place_data['description_long'],
+                    'short_description': place_data['description_short'],
+                    'long_description': place_data['description_long'],
                     'latitude': coordinates['lat'],
                     'longitude': coordinates['lng']
                 }
@@ -99,8 +99,8 @@ class Command(BaseCommand):
                 return
             
             if not created and force:
-                place.description_short = place_data['description_short']
-                place.description_long = place_data['description_long']
+                place.short_description = place_data['description_short']
+                place.long_description = place_data['description_long']
                 place.latitude = coordinates['lat']
                 place.longitude = coordinates['lng']
                 place.save()

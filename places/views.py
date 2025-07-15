@@ -48,8 +48,8 @@ def get_place_details_json(request, place_id):
     response_data = {
         'title': place.title,
         'imgs': image_urls,
-        'description_short': place.description_short,
-        'description_long': place.description_long,
+        'description_short': place.short_description,
+        'description_long': place.long_description,
         'coordinates': {
             'lng': str(place.longitude),
             'lat': str(place.latitude)

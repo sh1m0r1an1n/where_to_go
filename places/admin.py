@@ -38,12 +38,12 @@ class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
         'images_count'
     ]
     
-    search_fields = ['title', 'description_short', 'description_long']
+    search_fields = ['title', 'short_description', 'long_description']
     
     fields = [
         'title',
-        'description_short', 
-        'description_long',
+        'short_description', 
+        'long_description',
         'latitude',
         'longitude'
     ]
@@ -52,7 +52,7 @@ class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         """Настройка виджетов для полей"""
-        if db_field.name == 'description_long':
+        if db_field.name == 'long_description':
             kwargs['widget'] = TinyMCE(attrs={'cols': 80, 'rows': 30})
         return super().formfield_for_dbfield(db_field, request, **kwargs)
     

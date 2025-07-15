@@ -71,6 +71,9 @@ class PlaceImage(models.Model):
         verbose_name = "Изображение места"
         verbose_name_plural = "Изображения мест"
         ordering = ['place', 'order']
+        indexes = [
+            models.Index(fields=['place', 'order'], name='place_order_idx'),
+        ]
     
     def __str__(self):
         return f"Изображение {self.order} для {self.place.title}"

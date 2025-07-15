@@ -33,11 +33,11 @@ class Command(BaseCommand):
         
         try:
             if json_source.startswith(('http://', 'https://')):
-                place_data = self._load_from_url(json_source)
+                raw_place = self._load_from_url(json_source)
             else:
-                place_data = self._load_from_file(json_source)
+                raw_place = self._load_from_file(json_source)
                 
-            self._load_place_data(place_data, force)
+            self._load_place_data(raw_place, force)
             
         except Exception as e:
             raise CommandError(f'Ошибка загрузки данных: {e}')
@@ -68,25 +68,25 @@ class Command(BaseCommand):
         except json.JSONDecodeError as e:
             raise CommandError(f'Ошибка парсинга JSON файла: {e}')
 
-    def _load_place_data(self, place_data, force):
+    def _load_place_data(self, raw_place, force):
         """Загружает данные о месте в базу данных"""
         required_fields = ['title', 'description_short', 'description_long', 'coordinates']
         for field in required_fields:
-            if field not in place_data:
+            if field not in raw_place:
                 raise CommandError(f'Отсутствует обязательное поле: {field}')
         
-        coordinates = place_data['coordinates']
+        coordinates = raw_place['coordinates']
         if 'lat' not in coordinates or 'lng' not in coordinates:
             raise CommandError('Отсутствуют координаты (lat, lng)')
         
-        title = place_data['title']
+        title = raw_place['title']
         
         with transaction.atomic():
             place, created = Place.objects.get_or_create(
                 title=title,
                 defaults={
-                    'short_description': place_data['description_short'],
-                    'long_description': place_data['description_long'],
+                    'short_description': raw_place['description_short'],
+                    'long_description': raw_place['description_long'],
                     'latitude': coordinates['lat'],
                     'longitude': coordinates['lng']
                 }
@@ -99,8 +99,8 @@ class Command(BaseCommand):
                 return
             
             if not created and force:
-                place.short_description = place_data['description_short']
-                place.long_description = place_data['description_long']
+                place.short_description = raw_place['description_short']
+                place.long_description = raw_place['description_long']
                 place.latitude = coordinates['lat']
                 place.longitude = coordinates['lng']
                 place.save()
@@ -115,8 +115,8 @@ class Command(BaseCommand):
                     self.style.SUCCESS(f'Место "{title}" создано.')
                 )
             
-            if 'imgs' in place_data:
-                self._load_place_images(place, place_data['imgs'])
+            if 'imgs' in raw_place:
+                self._load_place_images(place, raw_place['imgs'])
 
     def _load_place_images(self, place, image_urls):
         """Загружает изображения для места"""

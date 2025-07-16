@@ -70,7 +70,7 @@ class PlaceImage(models.Model):
     class Meta:
         verbose_name = 'Изображение места'
         verbose_name_plural = 'Изображения мест'
-        ordering = ['place', 'order']
+        ordering = ['order']
         indexes = [
             models.Index(fields=['place', 'order'], name='place_order_idx'),
         ]

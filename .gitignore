@@ -9,6 +9,7 @@ test/
 where-to-go-places-master
 # C extensions
 *.so
+!media/ezgif.com-gif-maker_4nWhtfQ.gif
 
 # Distribution / packaging
 .Python

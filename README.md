@@ -12,7 +12,7 @@
 
 ## Демонстрация работы
 
-![Демонстрация работы карты](https://dvmn.org/media/lessons/ezgif.com-gif-maker_4nWhtfQ.gif)
+![Демонстрация работы карты](media/ezgif.com-gif-maker_4nWhtfQ.gif)
 
 ## Требования
 
